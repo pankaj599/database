@@ -1,5 +1,6 @@
+/*including various libraries along with ROS messages and sensor libraries*/
 #include <Wire.h>
-#include <BMP180TwoWire.h>
+#include <BMP180TwoWire.h>                                                            
 #include <ros.h>
 #include <std_msgs/Int16.h>
 #include <std_msgs/Int16MultiArray.h>
@@ -7,9 +8,10 @@
 #include <DHT.h>
 #include <DHT_U.h>
 
+/*defining pins*/
 #define air_pin1 A1
 #define air_pin2 A2
-#define soil_pin A0
+#define soil_pin A0                                                                 
 #define I2C_ADDRESS 0x77
 #define DHTPIN 4     
 
@@ -17,12 +19,12 @@ DHT_Unified dht(DHTPIN, DHT11);
 
 ros::NodeHandle  nh;
 
-std_msgs::Int16MultiArray data;
-ros::Publisher datapub("sensor_data", &data);
+std_msgs::Int16MultiArray data;                                           //ROS message type
+ros::Publisher datapub("sensor_data", &data);                             // datapub is node sensor_data is the topic name and data is message type
 
-char dim0_label[] = "data";
+char dim0_label[] = "data";                                               
 
-BMP180TwoWire bmp180(&Wire, I2C_ADDRESS);
+BMP180TwoWire bmp180(&Wire, I2C_ADDRESS);                                 //taking data from BMP using I2C 
 
 void setup() {
   nh.getHardware()->setBaud(9600);
@@ -46,7 +48,7 @@ void setup() {
   data.data = (int *)malloc(sizeof(int)*7);
    
   nh.initNode();
- nh.advertise(datapub);
+ nh.advertise(datapub);                                               // used to create a ros::Publisher which will publish data on rostopic
 }
 
 void loop() {
